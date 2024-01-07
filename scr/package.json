@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "chartjs-plugin-datalabels": "^2.2.0",
-        "crypto-js": "^4.2.0"
+        "crypto-js": "^4.2.0",
+        "docxtemplater": "^3.42.7"
     }
 }

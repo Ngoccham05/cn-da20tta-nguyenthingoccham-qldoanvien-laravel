@@ -26,7 +26,7 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-              <strong class="card-title mt-1" style="font-size:20px">Danh sách đoàn viên</strong>
+              <strong class="card-title mt-1 mr-auto" style="font-size:20px">Danh sách đoàn viên</strong>
               <!-- <a href="/ktcn/xuatdv">xuất</a> -->
               @if (Auth::guard('doanvien')->check() && Auth::guard('doanvien')->user()->role == 1)
               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#them-Modal" style="font-size: 16px">
@@ -82,7 +82,6 @@
         </div>   
       </div>
 
-      <!-- Modal thêm-->
       <div class="modal fade" id="them-Modal" tabindex="-1" role="dialog" aria-labelledby="them-ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -92,77 +91,109 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-
-            <form action="/ktcn/themdv" method="POST">
-              <div class="modal-body">
-                @csrf
-                <div class="row">
-                  <div class="col-2 d-flex align-items-center"><label for="txtma">Mã: </label></div>
-                  <div class="col-3"><input type="text" class="form-control mb-3" id="txtma" name="txtma" required autocomplete="off"></div>
-
-                  <div class="col-2 d-flex align-items-center ml-5"><label for="txtten">Họ tên: </label></div>
-                  <div class="col-4"><input type="text" class="form-control mb-3" id="txtten" name="txtten" required autocomplete="off"></div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-2 d-flex align-items-center"><label for="slgioi">Giới tính: </label></div>
-                  <div class="col-3">
-                    <select name="slgioi" class="form-control w-75">
-                      <option value="Nam">Nam</option>
-                      <option value="Nữ">Nữ</option>
-                    </select>
+            <div class="modal-body py-2">
+              <div class="custom-tab">
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link px-3 active" id="nav-default-tab" style="font-size:14px"
+                      data-toggle="tab" href="#nav-default" role="tab" aria-controls="nav-default" aria-selected="true">Mặc định</a>
+                    <a class="nav-item nav-link px-3" id="nav-file-tab" style="font-size:14px"
+                      data-toggle="tab" href="#nav-file" role="tab" aria-controls="nav-file" aria-selected="false">Thêm bằng tệp</a>
                   </div>
-                  <div class="col-2 d-flex align-items-center ml-5"><label for="txtngaysinh">Ngày sinh: </label></div>
-                  <div class="col-4">
-                    <input type="date" class="form-control w-75" id="txtngaysinh" name="txtngaysinh" required>
-                    <div id="error-msg-ngaysinh" style="color: red;"></div>
+                </nav>
+
+                <div class="tab-content pl-3 pt-3" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-default" role="tabpanel" aria-labelledby="nav-default-tab">
+                    <form action="/ktcn/themdv" method="POST">
+                      @csrf
+                      <div class="row">
+                        <div class="col-2 d-flex align-items-center"><label for="txtma">Mã: </label></div>
+                        <div class="col-3"><input type="text" class="form-control mb-3" id="txtma" name="txtma" required autocomplete="off"></div>
+
+                        <div class="col-2 d-flex align-items-center ml-5"><label for="txtten">Họ tên: </label></div>
+                        <div class="col-4"><input type="text" class="form-control mb-3" id="txtten" name="txtten" required autocomplete="off"></div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-2 d-flex align-items-center"><label for="slgioi">Giới tính: </label></div>
+                        <div class="col-3">
+                          <select name="slgioi" class="form-control w-75">
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                          </select>
+                        </div>
+                        <div class="col-2 d-flex align-items-center ml-5"><label for="txtngaysinh">Ngày sinh: </label></div>
+                        <div class="col-4">
+                          <input type="date" class="form-control w-75" id="txtngaysinh" name="txtngaysinh" required>
+                          <div id="error-msg-ngaysinh" style="color: red;"></div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-2 d-flex align-items-center"><label for="txtsdt">SĐT: </label></div>
+                        <div class="col-3"><input type="text" class="form-control mb-3" id="txtsdt" name="txtsdt" autocomplete="off"></div>
+
+                        <div class="col-2 d-flex align-items-center ml-5"><label for="txtdiachi">Địa chỉ: </label></div>
+                        <div class="col-4"><input type="text" class="form-control mb-3" id="txtdiachi" name="txtdiachi" autocomplete="off"></div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-2 d-flex align-items-center"><label for="slchidoan">Chi đoàn: </label></div>
+                        <div class="col-3">
+                          <select name="slchidoan" class="form-control mb-3 w-75">
+                            @foreach($chidoan as $cd)
+                              <option value="{{$cd->macd}}">{{$cd->macd}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+
+                        <div class="col-2 d-flex align-items-center ml-5"><label for="slchucvu">Chức vụ: </label></div>
+                        <div class="col-4">
+                          <select name="slchucvu" class="form-control mb-3">
+                            @foreach($chucvu as $cv)
+                              <option value="{{$cv->id}}">{{$cv->tencv}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-2 d-flex align-items-center"><label for="txtngayvd">Ngày vào Đoàn: </label></div>
+                        <div class="col-3">
+                          <input type="date" class="form-control" id="txtngayvd" name="txtngayvd">
+                          <div id="error-msg-ngayvd" style="color: red;"></div>
+                        </div>
+                        <div class="col-2 d-flex align-items-center ml-5"><label for="txtnoivd">Nơi vào Đoàn: </label></div>
+                        <div class="col-4"><input type="text" class="form-control" id="txtnoivd" name="txtnoivd" autocomplete="off"></div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>
+                      </div>   
+                    </form>
+                  </div>
+
+                  <div class="tab-pane fade show" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab">
+                    <form action="/ktcn/nhapdv" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      <div class="row">
+                        <div class="col-2 mt-2"><label for="filemc">Chọn tệp: </label></div>
+                        <div class="col-10 mb-3">
+                          <input type="file" class="custom-file-input" id="file" name="file" accept=".xlsx">
+                          <label class="custom-file-label mx-3" for="file"></label>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" id="btnNhap" class="btn btn-primary">Lưu</button>
+                      </div>           
+                    </form>
                   </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-2 d-flex align-items-center"><label for="txtsdt">SĐT: </label></div>
-                  <div class="col-3"><input type="text" class="form-control mb-3" id="txtsdt" name="txtsdt" autocomplete="off"></div>
-
-                  <div class="col-2 d-flex align-items-center ml-5"><label for="txtdiachi">Địa chỉ: </label></div>
-                  <div class="col-4"><input type="text" class="form-control mb-3" id="txtdiachi" name="txtdiachi" autocomplete="off"></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-2 d-flex align-items-center"><label for="slchidoan">Chi đoàn: </label></div>
-                  <div class="col-3">
-                    <select name="slchidoan" class="form-control mb-3 w-75">
-                      @foreach($chidoan as $cd)
-                        <option value="{{$cd->macd}}">{{$cd->macd}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-
-                  <div class="col-2 d-flex align-items-center ml-5"><label for="slchucvu">Chức vụ: </label></div>
-                  <div class="col-4">
-                    <select name="slchucvu" class="form-control mb-3">
-                      @foreach($chucvu as $cv)
-                        <option value="{{$cv->id}}">{{$cv->tencv}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-2 d-flex align-items-center"><label for="txtngayvd">Ngày vào Đoàn: </label></div>
-                  <div class="col-3">
-                    <input type="date" class="form-control" id="txtngayvd" name="txtngayvd">
-                    <div id="error-msg-ngayvd" style="color: red;"></div>
-                  </div>
-                  <div class="col-2 d-flex align-items-center ml-5"><label for="txtnoivd">Nơi vào Đoàn: </label></div>
-                  <div class="col-4"><input type="text" class="form-control" id="txtnoivd" name="txtnoivd" autocomplete="off"></div>
-                </div>
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                  <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>
-                </div>
-              </div>
-            </form>
+              </div><!-- custom-tab -->
+            </div>            
           </div>
         </div>
       </div>
@@ -289,7 +320,14 @@
 </div>
 <!-- /#right-panel -->
 
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
   <script type="text/javascript">
+
+    $(".custom-file-input").on("change", function() { 
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
 
     var btnSave = document.getElementById('btnSave');
     var btnUpDate = document.getElementById('btnUpDate');

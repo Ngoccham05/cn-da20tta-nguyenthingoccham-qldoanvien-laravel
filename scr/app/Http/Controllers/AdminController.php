@@ -41,16 +41,20 @@ class AdminController extends Controller
             ->select('dotdg.tendot', 'loaidv.tenloaidv', DB::raw('COUNT(*) as soLuong'))
             ->where('dotdg.trangthai', '=', 'Khóa')
             ->orderBy('loaidv.id')
+            ->orderBy('dotdg.tendot')
             ->groupBy('dotdg.tendot', 'loaidv.tenloaidv')
             ->get();
 
         $chidoan = Chidoan::all();
-        return view('admin.index', compact(['slchidoan', 'sldoanvien', 'slhoatdong', 'slgnam', 'slgnu', 'loaidv', 'chidoan']));
+        $dotdg = dotdg::where('dotdg.trangthai', 'Khóa')->get();
+
+        return view('admin.index', compact(['slchidoan', 'sldoanvien', 'slhoatdong', 'slgnam', 'slgnu', 'loaidv', 'chidoan', 'dotdg']));
     }
+
     public function bdloc(Request $request)
     {
         try {
-            $macd = $request->input('macd');
+            $madot = $request->input('madot');
 
             $loaidv = DB::table('danhgiadv')
                 ->join('loaidv', 'danhgiadv.maloaidv', '=', 'loaidv.id')
@@ -58,7 +62,7 @@ class AdminController extends Controller
                 ->join('doanvien', 'danhgiadv.madv', '=', 'doanvien.madv')
                 ->select('dotdg.tendot', 'loaidv.tenloaidv', DB::raw('COUNT(*) as soLuong'))
                 ->where('dotdg.trangthai', '=', 'Khóa')
-                ->where('doanvien.macd', $macd)
+                ->where('dotdg.madot', $madot)
                 ->orderBy('loaidv.id')
                 ->groupBy('dotdg.tendot', 'loaidv.tenloaidv')
                 ->get()
@@ -70,27 +74,6 @@ class AdminController extends Controller
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
-
-
-    // public function bdloc(Request $request)
-    // {
-        
-    //     $macd = $request->input('macd');
-    //     dd($macd);
-
-    //     $loaidv = DB::table('danhgiadv')
-    //         ->join('loaidv', 'danhgiadv.maloaidv', '=', 'loaidv.id')
-    //         ->join('dotdg', 'danhgiadv.madot', '=', 'dotdg.madot')
-    //         ->join('doanvien', 'danhgiadv.madv', '=', 'doanvien.madv')
-    //         ->select('dotdg.tendot', 'loaidv.tenloaidv', DB::raw('COUNT(*) as soLuong'))
-    //         ->where('dotdg.trangthai', '=', 'Khóa')
-    //         ->where('doanvien.macd', $macd)
-    //         ->orderBy('loaidv.id')
-    //         ->groupBy('dotdg.tendot', 'loaidv.tenloaidv')
-    //         ->get();
-            
-    //     return response()->json(['loaidv' => $loaidv]);
-    // }
 
 //----------------tiêu chí----------------
     //ds tiêu chí

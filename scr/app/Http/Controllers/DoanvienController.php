@@ -924,7 +924,7 @@ class DoanvienController extends Controller
             }          
         }
 
-        $count = dattc::where('madv', $madv)->where('madot', $madotA[0])->count();
+        $count = dattc::where('madv', $madvA[0])->where('madot', $madotA[0])->count();
         $soTC = tieuchi::all()->count();
 
         if(($soTC *0.8) < $count){

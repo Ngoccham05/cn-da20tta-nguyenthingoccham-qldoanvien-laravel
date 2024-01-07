@@ -17,8 +17,6 @@ Route::get('/', 'App\Http\Controllers\LoginController@loginpage')->name('loginpa
 Route::get('/logout', 'App\Http\Controllers\LoginController@logout');
 Route::post('/home', 'App\Http\Controllers\LoginController@home');
 
-
-
 Route::middleware('checklogin')->group(function(){
     Route::prefix('admin')->group(function (){
         Route::get('/home', 'App\Http\Controllers\AdminController@home');
@@ -150,6 +148,7 @@ Route::middleware('checklogin')->group(function(){
         Route::get('/danhgiacd', 'App\Http\Controllers\DoanvienController@danhgiacd');
         Route::get('/dgchidoan', 'App\Http\Controllers\DoanvienController@dgchidoan');
 
-        //Route::get('/xuatdv', 'App\Http\Controllers\ImExController@xuatdv');
+        Route::get('/xuatdv', 'App\Http\Controllers\ImExController@xuatdv');
+        Route::post('/nhapdv', 'App\Http\Controllers\ImExController@nhapdv');
     });
 });
