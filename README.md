@@ -3,7 +3,6 @@
 
 **Sinh viên thực hiện:** Nguyễn Thị Ngọc Chăm - 110120008
   - Email: ngoccham0912@gmail.com
-  - Điện thoại: 0397 256 410  
 
 **Nội dung đề tài bao gồm:** phân quyền đăng nhập cho các nhóm người dùng; quản lý thông tin của đoàn viên; quản lý các hoạt động, phong trào; đánh giá và xếp loại đoàn viên, chi đoàn theo học kỳ, năm học; thống kê số lượng đoàn viên.
 
